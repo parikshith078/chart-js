@@ -23,22 +23,9 @@ ChartJS.register(
   Legend,
 );
 
-
 export default function BarGraph({ barData }: { barData: DataDict }) {
   const [currentData, setCurrentData] = useState(barData);
   const filterData = filterDataByTime(barData);
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top" as const,
-      },
-      title: {
-        display: true,
-        text: "Chart.js Bar Chart",
-      },
-    },
-  };
   const data = {
     labels: Object.keys(currentData).map((item) => formatDateToMonth(item)),
     datasets: [
@@ -51,9 +38,23 @@ export default function BarGraph({ barData }: { barData: DataDict }) {
   };
 
   return (
-    <div className="flex flex-col gap-5 my-10 w-full justify-center">
+    <div className="flex flex-col gap-5 my-10  justify-center">
       <FilterButtons data={filterData} setData={setCurrentData} />
-      <Bar options={options} data={data} />;
+      <Bar
+        options={{
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: false,
+              text: "Test Taken Over Time",
+            },
+          },
+        }}
+        data={data}
+      />
     </div>
   );
 }

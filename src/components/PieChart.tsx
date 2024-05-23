@@ -6,8 +6,6 @@ import { FilterButtons } from "./FilterButtons";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-// TODO: Add title and legend
-// TODO: Update lables
 interface ModeCount {
   [key: string]: number;
 }
@@ -22,7 +20,7 @@ export default function PieChart({ pieData }: { pieData: OutputFormat }) {
     labels: Object.keys(currentData),
     datasets: [
       {
-        label: "# of Votes",
+        label: "Test taken",
         data: Object.values(currentData),
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
@@ -42,9 +40,22 @@ export default function PieChart({ pieData }: { pieData: OutputFormat }) {
   };
   if (!pieData) return <div>Loading...</div>;
   return (
-    <div className="flex flex-col gap-5 my-10 w-full justify-center">
+    <div className="flex flex-col gap-5 my-10  justify-center">
       <FilterButtons data={pieData} setData={setCurrentData} />
-      <Pie data={data} />
+      <Pie options={
+        {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: false,
+              text: "Different Modes Taken",
+            },
+          },
+        }
+      } data={data} />
     </div>
   );
 }

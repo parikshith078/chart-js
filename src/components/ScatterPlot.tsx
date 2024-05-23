@@ -15,16 +15,6 @@ import { FilterButtons } from "./FilterButtons";
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
-const options = {
-  scales: {
-    y: {
-      beginAtZero: true,
-    },
-  },
-};
-
-// TODO: Fix x axis labels
-// TODO: Add title and legend
 
 export default function ScatterPlot({ wpmData }: { wpmData: DataPoint[] }) {
   const sortData = sortDataByTime(wpmData);
@@ -33,17 +23,35 @@ export default function ScatterPlot({ wpmData }: { wpmData: DataPoint[] }) {
   const data = {
     datasets: [
       {
-        label: "A dataset",
+        label: "word per minute",
         data: currentData,
         backgroundColor: "rgba(255, 99, 132, 1)",
       },
     ],
   };
   return (
-    <div className="flex flex-col gap-5 my-10 w-full justify-center">
+    <div className="">
       <FilterButtons data={sortData} setData={setCurrentData} />
-      <Scatter options={options} data={data} />
+      <Scatter
+        options={{
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: false,
+              text: "WPM Over Time",
+            },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        }}
+        data={data}
+      />
     </div>
   );
 }
-

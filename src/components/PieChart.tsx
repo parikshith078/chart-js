@@ -6,8 +6,6 @@ import { FilterButtons } from "./FilterButtons";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-// TODO: Add title and legend
-// TODO: Update lables
 interface ModeCount {
   [key: string]: number;
 }

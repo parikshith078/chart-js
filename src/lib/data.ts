@@ -28,16 +28,11 @@ export const headers = [
   "timestamp",
 ];
 
-export const getDataFromCsv = async () => {
+const getDataFromCsv = async () => {
   const records = [];
   const path = process.cwd() + "/public/typing-data.csv";
-  const parser = fs.createReadStream(path).pipe(
-    parse({
-      // CSV options if any
-    }),
-  );
+  const parser = fs.createReadStream(path).pipe(parse({}));
   for await (const record of parser) {
-    // Work with each record
     records.push(record);
   }
   return records;
@@ -48,7 +43,7 @@ export const wpmData = async () => {
   return extractWpmAndTimestamp(records);
 };
 
- const extractWpmAndTimestamp = (records: string[][]) => {
+const extractWpmAndTimestamp = (records: string[][]) => {
   const data = [];
   for (let i = 1; i < records.length; i++) {
     const record = records[i];
@@ -114,4 +109,3 @@ const formatDate = (timeStamp: number) => {
   const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
   return formattedDate;
 };
-

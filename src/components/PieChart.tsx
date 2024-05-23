@@ -2,6 +2,7 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { useState } from "react";
 import { Pie } from "react-chartjs-2";
+import { FilterButtons } from "./FilterButtons";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -42,29 +43,7 @@ export default function PieChart({ pieData }: { pieData: OutputFormat }) {
   if (!pieData) return <div>Loading...</div>;
   return (
     <div className="flex flex-col gap-5 my-10 w-full justify-center">
-      <div className="flex gap-10 justify-center">
-        <button
-          onClick={() => {
-            setCurrentData(pieData.allTime);
-          }}
-        >
-          All time
-        </button>
-        <button
-          onClick={() => {
-            setCurrentData(pieData.last3Months);
-          }}
-        >
-          Last 3 month
-        </button>
-        <button
-          onClick={() => {
-            setCurrentData(pieData.lastMonth);
-          }}
-        >
-          Last month
-        </button>
-      </div>
+      <FilterButtons data={pieData} setData={setCurrentData} />
       <Pie data={data} />
     </div>
   );

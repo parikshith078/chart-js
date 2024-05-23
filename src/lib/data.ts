@@ -1,7 +1,9 @@
 import fs from "node:fs";
 import { parse } from "csv-parse";
+import { OutputFormat } from "./types";
+import { formatDate } from "./utils";
 
-export const headers = [
+const headers = [
   "_id",
   "isPb",
   "wpm",
@@ -38,12 +40,8 @@ const getDataFromCsv = async () => {
   return records;
 };
 
-export const wpmData = async () => {
+export const getScaterGraphData = async () => {
   const records = await getDataFromCsv();
-  return extractWpmAndTimestamp(records);
-};
-
-const extractWpmAndTimestamp = (records: string[][]) => {
   const data = [];
   for (let i = 1; i < records.length; i++) {
     const record = records[i];
@@ -55,37 +53,7 @@ const extractWpmAndTimestamp = (records: string[][]) => {
   return data;
 };
 
-export const countMode = async () => {
-  const records = await getDataFromCsv();
-  const data = {
-    quote: 0,
-    custom: 0,
-    time: 0,
-    words: 0,
-  };
-
-  for (let i = 1; i < records.length; i++) {
-    const record = records[i];
-    switch (record[7]) {
-      case "quote":
-        data.quote++;
-        break;
-      case "custom":
-        data.custom++;
-        break;
-      case "time":
-        data.time++;
-        break;
-      case "words":
-        data.words++;
-        break;
-    }
-  }
-  console.log(data);
-  return data;
-};
-
-export const formattedDateData = async () => {
+export const getBarGraphData = async () => {
   const data = await getDataFromCsv();
   for (let i = 1; i < data.length; i++) {
     data[i][headers.length - 1] = formatDate(
@@ -104,23 +72,7 @@ export const formattedDateData = async () => {
   return testFrequencyByDate;
 };
 
-const formatDate = (timeStamp: number) => {
-  const date = new Date(timeStamp);
-  const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
-  return formattedDate;
-};
-
-interface ModeCount {
-  [key: string]: number;
-}
-
-interface OutputFormat {
-  allTime: ModeCount;
-  last3Months: ModeCount;
-  lastMonth: ModeCount;
-}
-
-export const countModeFrequency = async (): Promise<OutputFormat> => {
+export const getPieChartData = async (): Promise<OutputFormat> => {
   const data = await getDataFromCsv();
   const currentDate = new Date();
   const lastMonth = new Date(currentDate);

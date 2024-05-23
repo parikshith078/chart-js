@@ -1,16 +1,28 @@
 "use client";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { useState } from "react";
 import { Pie } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function PieChart({ pieData }: { pieData: any }) {
+// TODO: Add title and legend
+// TODO: Update lables
+interface ModeCount {
+  [key: string]: number;
+}
+interface OutputFormat {
+  allTime: ModeCount;
+  last3Months: ModeCount;
+  lastMonth: ModeCount;
+}
+export default function PieChart({ pieData }: { pieData: OutputFormat }) {
+  const [currentData, setCurrentData] = useState(pieData.allTime)
   const data = {
-    labels: ["Red", "Blue", "Yellow", "Green", ],
+    labels: Object.keys(currentData),
     datasets: [
       {
         label: "# of Votes",
-        data: Object.values(pieData),
+        data: Object.values(currentData),
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(54, 162, 235, 0.2)",
@@ -28,5 +40,32 @@ export default function PieChart({ pieData }: { pieData: any }) {
     ],
   };
   if (!pieData) return <div>Loading...</div>;
-  return <Pie data={data} />;
+  return (
+    <div className="flex flex-col gap-5 my-10 w-full justify-center">
+      <div className="flex gap-10 justify-center">
+        <button
+          onClick={() => {
+            setCurrentData(pieData.allTime);
+          }}
+        >
+          All time
+        </button>
+        <button
+          onClick={() => {
+            setCurrentData(pieData.last3Months);
+          }}
+        >
+          Last 3 month
+        </button>
+        <button
+          onClick={() => {
+            setCurrentData(pieData.lastMonth);
+          }}
+        >
+          Last month
+        </button>
+      </div>
+      <Pie data={data} />
+    </div>
+  );
 }

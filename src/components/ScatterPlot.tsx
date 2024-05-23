@@ -41,7 +41,7 @@ export function ScatterPlot({ wpmData }: { wpmData: DataPoint[] }) {
   };
   return (
     <div className="flex flex-col gap-5 my-10 w-full justify-center">
-      <div>
+      <div className="flex gap-10 justify-center">
         <button
           onClick={() => {
             setCurrentData(sortData.allTime);

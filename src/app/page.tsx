@@ -1,12 +1,12 @@
 import BarGraph from "@/components/BarGraph";
 import PieChart from "@/components/PieChart";
 import { ScatterPlot } from "@/components/ScatterPlot";
-import { countMode, formattedDateData, wpmData } from "@/lib/data";
+import { countMode, countModeFrequency, formattedDateData, wpmData } from "@/lib/data";
 
 export default async function Home() {
   const scatterData = await wpmData();
   const barData = await formattedDateData();
-  const pieData = await countMode();
+  const pieData = await countModeFrequency() 
   return (
     <div className="flex flex-col gap-10 items-center">
       <div className="h-[50vh] w-full flex justify-center">
